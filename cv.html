@@ -1,29 +1,222 @@
 <!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Adem Çıtak - Veri analizi, raporlama, Excel VBA otomasyon ve Power BI özgeçmişi.">
   <title>CV | Adem Çıtak</title>
   <link rel="stylesheet" href="assets/css/style.css">
+
+  <style>
+    .cv-hero{padding:72px 0 36px}
+    .cv-hero h1{font-size:clamp(2.7rem,6vw,5.2rem);margin-bottom:14px}
+    .cv-title{font-size:1.18rem;color:var(--accent2);font-weight:760}
+    .cv-grid{display:grid;grid-template-columns:1.4fr .6fr;gap:22px;padding-bottom:90px}
+    .cv-panel{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));
+      border-radius:22px;padding:26px
+    }
+    .cv-section + .cv-section{margin-top:30px;padding-top:28px;border-top:1px solid var(--line)}
+    .cv-section h2{font-size:1.55rem;margin:0 0 15px;letter-spacing:-.025em}
+    .cv-section p{color:var(--muted);margin:0}
+    .skill-wrap{display:flex;flex-wrap:wrap;gap:9px}
+    .skill{
+      padding:8px 11px;border:1px solid rgba(99,168,255,.24);
+      background:rgba(99,168,255,.055);border-radius:999px;
+      color:#cfe5ff;font-size:.82rem;font-weight:720
+    }
+    .role{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+    .role h3{margin:0 0 4px;font-size:1.16rem}
+    .role small{color:var(--accent2);font-weight:700}
+    .bullet-list{margin:14px 0 0;padding-left:20px;color:var(--muted)}
+    .bullet-list li{margin:8px 0}
+    .project-item{padding:15px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+    .project-item:last-child{border-bottom:0;padding-bottom:0}
+    .project-item strong{display:block;margin-bottom:4px}
+    .project-item span{color:var(--muted);font-size:.91rem}
+    .side-title{font-size:.78rem;letter-spacing:.15em;color:var(--accent);font-weight:850;margin-bottom:12px}
+    .side-block + .side-block{margin-top:26px;padding-top:24px;border-top:1px solid var(--line)}
+    .side-list{display:grid;gap:10px;color:var(--muted);font-size:.92rem}
+    .side-list strong{color:white;display:block;font-size:.88rem}
+    .cv-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:26px}
+    .stat{
+      display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;
+      padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06)
+    }
+    .stat:last-child{border-bottom:0}
+    .stat b{font-size:1.2rem;color:white}
+    .stat span{color:var(--muted);font-size:.86rem}
+    @media(max-width:900px){.cv-grid{grid-template-columns:1fr}.role{display:block}}
+  </style>
 </head>
+
 <body>
-<header class="header"><div class="container nav">
-  <a class="brand" href="index.html">Adem Çıtak <small>Portfolio</small></a>
-  <nav class="nav-links">
-    <a href="index.html">Ana Sayfa</a><a class="active" href="cv.html">CV</a>
-    <a class="tool-link" href="vergi-hesaplama.html">Vergi Hesaplama</a>
-  </nav>
-</div></header>
-<main>
-  <div class="container">
-    <section class="glass future-box">
-      <div class="eyebrow">SONRAKİ ADIM</div>
-      <h2>CV sayfası için altyapı hazır.</h2>
-      <p class="lead">Bir sonraki revizyonda CV'ni bu sayfaya profesyonel, ATS uyumlu ve proje odaklı biçimde yerleştirebiliriz.</p>
-      <a class="btn accent" href="index.html">Ana sayfaya dön</a>
-    </section>
+<header class="header">
+  <div class="container nav">
+    <a class="brand" href="index.html">Adem Çıtak <small>Portfolio</small></a>
+    <nav class="nav-links">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="index.html#projects">Projeler</a>
+      <a class="active" href="cv.html">CV</a>
+      <a class="tool-link" href="vergi-hesaplama.html">Vergi Hesaplama</a>
+    </nav>
   </div>
+</header>
+
+<main>
+  <section class="cv-hero">
+    <div class="container">
+      <div class="eyebrow">ÖZGEÇMİŞ • VERİ & RAPORLAMA</div>
+      <h1>Adem Çıtak</h1>
+      <div class="cv-title">Operasyon Uzman Yardımcısı • Veri Analizi • Raporlama • Otomasyon</div>
+      <p class="lead">
+        Operasyonel veriyi karar destek çıktısına dönüştüren; raporlama, süreç analizi
+        ve Excel tabanlı otomasyon geliştirme deneyimine sahip veri profesyoneli.
+      </p>
+
+      <div class="cv-actions">
+        <a class="btn accent" href="vergi-hesaplama.html">Canlı Projeyi Gör</a>
+        <a class="btn" href="#deneyim">Deneyim</a>
+        <a class="btn" href="#yetkinlikler">Yetkinlikler</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container cv-grid">
+    <div class="cv-panel">
+
+      <section class="cv-section">
+        <div class="eyebrow">PROFESYONEL ÖZET</div>
+        <h2>Veriden sürece, süreçten ölçülebilir çıktıya.</h2>
+        <p>
+          Excel, Power Query, VBA/makro, Pivot tablolar, KPI takibi ve periyodik/ad-hoc
+          raporlama çalışmaları yürütüyorum. Gümrük vergi hesaplama, katileştirme/maliyet
+          ve veri aktarım otomasyonları gibi süreçlerde manuel kontrol adımlarını azaltan,
+          daha hızlı ve tekrar kullanılabilir çözümler geliştirmeye odaklanıyorum.
+        </p>
+      </section>
+
+      <section id="deneyim" class="cv-section">
+        <div class="eyebrow">DENEYİM</div>
+        <div class="role">
+          <div>
+            <h3>Operasyon Uzman Yardımcısı</h3>
+            <small>Veri Analizi • Raporlama • Süreç Otomasyonu</small>
+          </div>
+        </div>
+        <ul class="bullet-list">
+          <li>Operasyonel verilerin temizlenmesi, doğrulanması, analiz edilmesi ve raporlanması.</li>
+          <li>Excel, Power Query ve VBA ile tekrarlı iş adımlarının otomatikleştirilmesi.</li>
+          <li>Pivot tablolar, KPI takibi ve yönetim raporlarının hazırlanması.</li>
+          <li>Gümrük vergisi, maliyet/katileştirme ve veri aktarım süreçleri için kontrol ve hesaplama araçlarının geliştirilmesi.</li>
+          <li>Manuel işlem sürelerini ve kontrol yükünü azaltmaya yönelik süreç iyileştirme çalışmaları.</li>
+        </ul>
+      </section>
+
+      <section class="cv-section">
+        <div class="eyebrow">SEÇİLİ PROJELER</div>
+        <h2>Uygulamaya dönüştürdüğüm çalışmalar</h2>
+
+        <div class="project-item">
+          <strong>2026 Gümrük Vergi Hesaplama</strong>
+          <span>GTİP, menşe, ithalat türü ve ödeme şekline göre vergi kalemlerini hesaplayan Excel ve web tabanlı araç.</span>
+        </div>
+
+        <div class="project-item">
+          <strong>Excel / VBA Raporlama Otomasyonları</strong>
+          <span>Farklı Excel raporlarından veri aktarımı, başlık eşleştirme, veri temizleme ve otomatik raporlama süreçleri.</span>
+        </div>
+
+        <div class="project-item">
+          <strong>Katileştirme & Maliyet Otomasyonu</strong>
+          <span>Parça ve kalem bazlı verilerin eşleştirilmesi, navlun/sigorta ve vergi kalemlerinin dağıtılması için otomasyon akışı.</span>
+        </div>
+
+        <div class="project-item">
+          <strong>Power BI Dashboard & KPI Raporlama</strong>
+          <span>Operasyonel verileri yönetim seviyesinde izlenebilir hale getiren dashboard ve performans raporları.</span>
+        </div>
+
+        <div class="project-item">
+          <strong>PDF / Excel Veri Çıkarma İş Akışları</strong>
+          <span>PDF dokümanlarından veri yakalama, parça/GTİP eşleştirme ve sonuçların Excel'e aktarılması üzerine otomasyonlar.</span>
+        </div>
+      </section>
+
+      <section id="yetkinlikler" class="cv-section">
+        <div class="eyebrow">TEMEL YETKİNLİKLER</div>
+        <h2>Teknik araçlar ve çalışma alanları</h2>
+        <div class="skill-wrap">
+          <span class="skill">Microsoft Excel</span>
+          <span class="skill">Power Query</span>
+          <span class="skill">VBA & Makrolar</span>
+          <span class="skill">Pivot Tablolar</span>
+          <span class="skill">XLOOKUP / DÜŞEYARA</span>
+          <span class="skill">Gelişmiş Formüller</span>
+          <span class="skill">Power BI</span>
+          <span class="skill">SQL (Temel)</span>
+          <span class="skill">Veri Analizi</span>
+          <span class="skill">KPI Takibi</span>
+          <span class="skill">Veri Temizleme</span>
+          <span class="skill">Veri Doğrulama</span>
+          <span class="skill">Veri Kalitesi</span>
+          <span class="skill">Süreç Analizi</span>
+          <span class="skill">Raporlama</span>
+          <span class="skill">PowerPoint</span>
+        </div>
+      </section>
+    </div>
+
+    <aside class="cv-panel">
+      <div class="side-block">
+        <div class="side-title">ODAK ALANLARI</div>
+        <div class="side-list">
+          <div><strong>Veri Analizi</strong>Operasyonel veriden karar destek çıktısı</div>
+          <div><strong>Raporlama</strong>Periyodik, ad-hoc ve KPI raporları</div>
+          <div><strong>Otomasyon</strong>Excel, Power Query ve VBA tabanlı iş akışları</div>
+          <div><strong>Dashboard</strong>Power BI ile görsel raporlama</div>
+        </div>
+      </div>
+
+      <div class="side-block">
+        <div class="side-title">ETKİ</div>
+        <div class="stat">
+          <b>%25–50</b>
+          <span>Bazı otomasyon süreçlerinde yaklaşık hızlanma</span>
+        </div>
+        <div class="stat">
+          <b>↓</b>
+          <span>Tekrarlı manuel işlem ve kontrol adımlarında azalma</span>
+        </div>
+        <div class="stat">
+          <b>↑</b>
+          <span>Veri tutarlılığı ve raporlama standardizasyonu</span>
+        </div>
+      </div>
+
+      <div class="side-block">
+        <div class="side-title">CANLI PROJE</div>
+        <p style="color:var(--muted);font-size:.91rem">
+          Portföydeki vergi hesaplama aracını doğrudan inceleyebilirsiniz.
+        </p>
+        <a class="btn accent" href="vergi-hesaplama.html">Vergi Hesaplama →</a>
+      </div>
+
+      <div class="side-block">
+        <div class="side-title">İLETİŞİM</div>
+        <p style="color:var(--muted);font-size:.91rem">
+          E-posta, LinkedIn ve indirilebilir PDF CV bağlantılarını bir sonraki revizyonda buraya ekleyebiliriz.
+        </p>
+      </div>
+    </aside>
+  </section>
 </main>
-<footer><div class="container">© <span data-year></span> Adem Çıtak</div></footer>
+
+<footer>
+  <div class="container">© <span data-year></span> Adem Çıtak • CV & Portfolio</div>
+</footer>
+
 <script src="assets/js/site.js"></script>
 </body>
 </html>
