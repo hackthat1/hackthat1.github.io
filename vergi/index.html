@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html lang="tr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="GTİP, menşe, belge, teslim ve ödeme bilgilerine göre açıklamalı gümrük vergisi ve ithalat maliyeti hesaplama uygulaması" name="description"/>
+<meta content="#0b5a6b" name="theme-color"/>
+<title>Gümrük Vergisi ve İthalat Maliyeti Hesaplama</title>
+<link href="assets/favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+</head>
+<body>
+<div aria-live="polite" class="loading-screen" id="loadingScreen" role="status">
+<div class="loader-mark">VH</div>
+<div>
+<strong>Vergi verileri yükleniyor</strong>
+<span id="loadingText">Tarife tablosu hazırlanıyor…</span>
+</div>
+</div>
+<header class="topbar">
+<a class="portfolio-back" href="../index.html" title="Portföye dön">← Portföye dön</a>
+<a aria-label="Ana sayfa" class="brand" href="#hesaplama">
+<span class="brand-mark">VH</span>
+<span><strong>Vergi Hesaplama</strong><small>2026 · İthalat Maliyeti Hesaplama</small></span>
+</a>
+<button aria-expanded="false" aria-label="Menüyü aç" class="menu-button" id="menuButton">☰</button>
+<nav aria-label="Ana menü" class="main-nav" id="mainNav"><button class="nav-link active" data-view="hesaplama">Tekli Hesaplama</button><button class="nav-link" data-view="toplu">Toplu Hesaplama</button><button class="nav-link" data-view="faiz">Faiz Hesaplama</button><button class="nav-link" data-view="tarifeler">GTİP Sorgu</button></nav>
+</header>
+<main class="page-shell">
+<section class="view active" id="view-hesaplama">
+<div class="hero">
+<div>
+<span class="eyebrow">AÇIKLAMALI İTHALAT MALİYETİ HESAPLAMA</span>
+<h1>Toplam maliyeti ve vergi kalemlerini görün</h1>
+<p>Ürün, menşe, belge, teslim ve ödeme bilgilerini girin; CIF / gümrük kıymeti, matrahlar, oranlar ve vergi tutarları ayrı ayrı gösterilsin.</p>
+</div>
+<div class="hero-stat-grid">
+<div><strong id="heroTariffCount">—</strong><span>Tarife</span></div>
+<div><strong id="heroDampingCount">—</strong><span>Damping Kaydı</span></div>
+<div><strong id="heroAliasCount">—</strong><span>Ülke Eşleştirmesi</span></div>
+</div>
+</div>
+<div class="workspace-grid">
+<form autocomplete="off" class="panel input-panel" id="calcForm">
+<div class="panel-heading">
+<div><span class="step">1</span><h2>İşlem bilgileri</h2></div>
+<button class="text-button" type="reset">Formu temizle</button>
+</div>
+<div class="field span-2 gtip-field">
+<label for="gtipInput">GTİP / Tarife</label>
+<div class="input-with-action"><input aria-autocomplete="list" aria-controls="gtipSuggestions" id="gtipInput" inputmode="numeric" name="gtip" placeholder="Örn. 8708.94.35.00.12" required=""/><button aria-label="GTİP ara" class="icon-button" id="gtipSearchButton" type="button">⌕</button></div>
+<div class="suggestions" hidden="" id="gtipSuggestions" role="listbox"></div><small class="field-help" id="gtipStatus">12 haneli GTİP girin.</small>
+</div><div class="field"><label for="currencyCode">Mal Bedeli Döviz Cinsi</label><select id="currencyCode" required=""><option value="TL">TL</option><option value="EUR">EUR</option><option value="USD">USD</option><option value="GBP">GBP</option><option value="JPY">JPY</option><option value="OTHER">Diğer</option></select></div><div class="field"><label for="exchangeRate">Döviz Kuru</label><input id="exchangeRate" min="0.000001" required="" step="0.000001" type="number" value="1"/><small class="field-help">Yalnızca Mal Bedeli × Döviz Kuru hesabında kullanılır.</small></div><div class="field span-2"><label for="dollarRate">Dolar Kuru</label><input id="dollarRate" min="0.000001" step="0.000001" type="number" placeholder="1 USD'nin TL karşılığı"/><small class="field-help">Gözetim varsa zorunludur; fiyat tamamlama hesabındaki USD tutarını TL'ye çevirmek için kullanılır.</small></div><div class="field"><label for="invoiceValue">Mal bedeli</label><input id="invoiceValue" min="0.01" placeholder="Mal bedeli" required="" step="0.01" type="number"/></div><div class="field"><label for="deliveryTerm">Teslim şekli</label><select id="deliveryTerm" required=""><option value="">Teslim şekli seçin</option><option>EXW</option><option>FCA</option><option>FOB</option><option>CFR</option><option>CIF</option><option>CPT</option><option>CIP</option><option>DAP</option><option>DPU</option><option>DDP</option></select></div><div class="field"><label for="freightCost">Navlun (TL)</label><input id="freightCost" min="0" required="" step="0.01" type="number" value="0"/></div><div class="field"><label for="insuranceCost">Sigorta (TL)</label><input id="insuranceCost" min="0" required="" step="0.01" type="number" value="0"/></div><div class="field span-2"><label for="extraCost">Diğer yan masraf (TL)</label><input id="extraCost" min="0" required="" step="0.01" type="number" value="0"/><small class="field-help">Döviz kuru yalnızca Mal Bedeline uygulanır. Dolar kuru sadece gözetim fiyat tamamlama tutarının TL karşılığında kullanılır. Navlun, sigorta ve diğer yan masrafları TL olarak girin.</small></div><div class="field span-2"><label for="quantity">Miktar</label><input id="quantity" min="0.001" required="" step="0.001" type="number"/></div><div class="field"><label for="grossWeight">Brüt KG</label><input id="grossWeight" min="0.001" required="" step="0.001" type="number"/></div><div class="field"><label for="netWeight">Net KG</label><input id="netWeight" min="0.001" required="" step="0.001" type="number"/></div><div class="field"><label for="originCountry">Menşei</label><input id="originCountry" list="countryList" placeholder="Ülke yazın" required=""/><datalist id="countryList"></datalist></div><div class="field"><label for="paymentMethod">Ödeme şekli</label><select id="paymentMethod" required=""></select></div><div class="field span-2"><label for="agreement">Belge / uluslararası antlaşma</label><select id="agreement" required=""></select><small class="field-help">AT veya Dİ seçilmeden hesaplama yapılmaz.</small></div><div class="field span-2 advanced-row"><details><summary>Gelişmiş bilgiler</summary><div class="advanced-grid">
+<div class="field"><label for="materialCode">Malzeme kodu</label><input id="materialCode" placeholder="Opsiyonel"/></div>
+<div class="field"><label for="commercialDescription">Ticari tanım</label><input id="commercialDescription" placeholder="Opsiyonel"/></div>
+<div class="field"><label for="dampingChoice">Damping oran seçimi</label><select id="dampingChoice"><option value="upper">Üst oran — Excel formülündeki değer</option></select></div>
+</div></details></div><button class="primary-button span-2" type="submit">Toplam maliyeti hesapla</button>
+</form>
+<section aria-live="polite" class="panel results-panel">
+<div class="panel-heading">
+<div><span class="step">2</span><h2>Hesaplama sonucu</h2></div>
+<div class="result-actions">
+<button class="icon-button" id="printResult" title="Yazdır / PDF">⎙</button>
+<button class="icon-button" id="downloadResult" title="CSV indir">⇩</button>
+</div>
+</div>
+<div class="empty-state" id="emptyResult">
+<div class="empty-icon">∑</div>
+<h3>Henüz hesaplama yapılmadı</h3>
+<p>İşlem bilgilerini doldurup “Vergileri hesapla” düğmesine basın.</p>
+</div>
+<div hidden="" id="resultContent">
+<div class="result-summary"><div class="summary-card accent"><span>Toplam ithalat maliyeti</span><strong id="landedCost">0</strong></div><div class="summary-card"><span>Vergi + tamamlama</span><strong id="totalTax">0</strong></div><div class="summary-card"><span>CIF / Gümrük kıymeti</span><strong id="cifValue">0</strong></div><div class="summary-card"><span>GTİP</span><strong id="resultGtip">—</strong></div></div>
+<div class="notices" id="resultNotices"></div>
+<div class="tariff-rate-strip" id="rateStrip"></div>
+<div class="table-wrap">
+<table class="result-table">
+<thead><tr><th>Vergi / Kalem</th><th>Oran</th><th>Matrah</th><th>Tutar</th><th>Not</th></tr></thead>
+<tbody id="resultRows"></tbody>
+</table>
+</div>
+<details class="formula-details">
+<summary>GTİP kaydı ve hesap ayrıntıları</summary>
+<div class="detail-grid" id="tariffDetail"></div>
+</details>
+</div>
+</section>
+</div>
+</section>
+<section class="view" id="view-toplu">
+<div class="section-heading">
+<div><span class="eyebrow">FATURA BİLGİLERİ SAYFASIYLA UYUMLU</span><h1>Toplu hesaplama</h1><p>Excel veya CSV dosyasındaki her satır ayrı hesaplanır; eksik GTİP, menşe, belge ve zorunlu alanlar işaretlenir. Sonuçta matrahlar, vergiler, toplam maliyet ve uyarı nedenleri ayrı sütunlara yazılır.</p></div>
+<button class="secondary-button" id="downloadTemplate">Şablon indir</button>
+</div>
+<div class="panel bulk-panel">
+<div class="bulk-settings">
+<div class="field"><label for="bulkDamping">Damping seçimi</label><select id="bulkDamping"><option value="upper">Üst oran — Excel ile aynı</option></select></div>
+<div class="field span-2"><small class="field-help">Ödeme şekli ve uluslararası antlaşma her satırda ayrı ayrı girilmelidir. Döviz kuru yalnızca Mal Bedeline uygulanır; Dolar Kuru gözetim fiyat tamamlama hesabında kullanılır. Navlun, Sigorta ve Diğer Yan Masraf TL kabul edilir.</small></div>
+</div>
+<label class="drop-zone" for="bulkFile" id="dropZone">
+<input accept=".xlsx,.xls,.csv" hidden="" id="bulkFile" type="file"/>
+<span class="drop-icon">⇧</span>
+<strong>Excel veya CSV dosyasını seçin</strong>
+<small>Dosyayı buraya sürükleyip bırakabilirsiniz.</small>
+</label>
+<div class="bulk-status" id="bulkStatus"></div>
+<div hidden="" id="bulkResults">
+<div class="bulk-toolbar">
+<div><strong id="bulkSummary">0 satır</strong><span id="bulkErrorSummary"></span></div>
+<button class="primary-button compact" id="exportBulk">Sonuçları Excel indir</button>
+</div>
+<div class="table-wrap bulk-table-wrap">
+<table class="data-table">
+<thead id="bulkHead"></thead>
+<tbody id="bulkBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section class="view" id="view-faiz">
+<div class="section-heading"><div><span class="eyebrow">DÖNEMSEL BASİT FAİZ</span><h1>Faiz hesaplama</h1><p>Kaynak faiz Excel’indeki dönem ve aylık oranlar kullanılarak gün/30 yöntemiyle hesaplanır.</p></div></div>
+<div class="workspace-grid"><form class="panel input-panel" id="interestForm"><div class="panel-heading"><div><span class="step">1</span><h2>Faiz bilgileri</h2></div></div><div class="field span-2"><label for="interestPrincipal">Ana para</label><input id="interestPrincipal" min="0.01" required="" step="0.01" type="number"/></div><div class="field"><label for="interestStart">Başlangıç tarihi</label><input id="interestStart" required="" type="date"/></div><div class="field"><label for="interestEnd">Bitiş / katileştirme tarihi</label><input id="interestEnd" required="" type="date"/></div><button class="primary-button span-2" type="submit">Faizi hesapla</button></form><section class="panel results-panel"><div class="panel-heading"><div><span class="step">2</span><h2>Faiz sonucu</h2></div></div><div class="empty-state" id="interestEmpty"><h3>Henüz hesaplama yapılmadı</h3></div><div hidden="" id="interestResult"></div></section></div>
+</section><section class="view" id="view-tarifeler">
+<div class="section-heading">
+<div><span class="eyebrow">2026 VERGİ TABLOSU</span><h1>GTİP ve oran sorgulama</h1><p>Tarife numarasıyla arayın ve hesaplamada kullanılan oranları görüntüleyin.</p></div>
+<div class="search-box"><span>⌕</span><input id="tariffSearch" placeholder="GTİP ara…"/></div>
+</div>
+<div class="panel">
+<div class="filter-row">
+<button class="filter-chip active" data-filter="all">Tümü</button>
+<button class="filter-chip" data-filter="igv">İGV olanlar</button>
+<button class="filter-chip" data-filter="gts">EMY-GTS olanlar</button>
+<button class="filter-chip" data-filter="gozetim">Gözetim olanlar</button>
+<button class="filter-chip" data-filter="bandrol">Bandrol olanlar</button>
+<button class="filter-chip" data-filter="otv">ÖTV olanlar</button>
+</div>
+<div class="table-wrap tariff-table-wrap">
+<table class="data-table">
+<thead><tr><th>GTİP</th><th>GV %</th><th>İGV %</th><th>KDV %</th><th>ÖTV %</th><th>Bandrol</th><th>KKDF %</th><th>EMY-GTS</th><th>Gözetim</th><th></th></tr></thead>
+<tbody id="tariffTableBody"></tbody>
+</table>
+</div>
+<div class="pagination"><button id="prevPage">‹ Önceki</button><span id="pageInfo">1 / 1</span><button id="nextPage">Sonraki ›</button></div>
+</div>
+</section>
+
+
+<section class="legal-disclaimer"><strong>Bilgilendirme notu:</strong> Hesaplamalar ön maliyet çalışması amacıyla sunulur. Bağlayıcı tarife sınıflandırması, gümrük müşavirliği görüşü veya resmi tahakkuk niteliğinde değildir. Şartlı, maktu, üreticiye bağlı veya özel mevzuat içeren satırlar ayrıca kontrol edilmelidir.</section></main>
+<div aria-live="polite" class="toast" id="toast" role="status"></div>
+<dialog class="modal" id="tariffModal">
+<div class="modal-head"><div><span class="eyebrow">GTİP DETAYI</span><h2 id="modalTitle">—</h2></div><button aria-label="Kapat" class="icon-button" id="closeModal">×</button></div>
+<div id="modalBody"></div>
+</dialog>
+<footer><span>Adem Çıtak · 2026 Vergi Hesaplama</span><span>Hesaplamalar tarayıcı içinde yapılır.</span></footer>
+<script src="./vergi-data.js?v=20260807-1230"></script>
+<script src="./assets/app.js?v=20260807-1230"></script>
+</body>
+</html>
