@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#0b1320"/>
+<title>Beslenme Takip Dashboard</title>
+<style>
+:root{
+ --bg:#09111c;--panel:#101b2a;--panel2:#122235;--text:#eef4fb;--muted:#90a4b8;
+ --line:#21354c;--accent:#64b5f6;--green:#62d394;--orange:#ffb86c;--purple:#c792ea;
+}
+*{box-sizing:border-box} html,body{margin:0;background:linear-gradient(135deg,#07101a,#0d1724 45%,#0a1220);
+color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+body{min-height:100vh}.wrap{max-width:1180px;margin:auto;padding:24px}
+header{display:flex;justify-content:space-between;gap:16px;align-items:end;margin-bottom:18px}
+h1{font-size:30px;margin:0 0 4px}.muted{color:var(--muted)} .small{font-size:12px}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input,select,button{font:inherit;border-radius:12px;border:1px solid var(--line)}
+input,select{background:#0c1724;color:var(--text);padding:10px 12px}
+button{padding:10px 14px;background:#173453;color:white;cursor:pointer;font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{background:rgba(16,27,42,.94);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 12px 32px rgba(0,0,0,.2)}
+.metric .title{color:var(--muted);font-size:13px}.metric .num{font-size:32px;font-weight:800;margin:7px 0}
+.unit{font-size:13px;color:var(--muted);font-weight:500}
+.progress{height:8px;border-radius:99px;background:#1d2e41;overflow:hidden}.bar{height:100%;width:0;background:var(--accent)}
+.grid2{display:grid;grid-template-columns:1.65fr .85fr;gap:16px;margin-top:16px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.section-head h2{font-size:18px;margin:0}.pill{padding:5px 9px;border-radius:999px;background:#142c45;color:#b8d9f4;font-size:12px}
+table{border-collapse:collapse;width:100%}th,td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}td{font-size:14px}
+.meal{font-size:12px;padding:4px 8px;border:1px solid #2b4663;border-radius:999px;display:inline-block}
+.empty{padding:32px 0;text-align:center;color:var(--muted)}
+.week{display:grid;gap:9px}.dayrow{display:grid;grid-template-columns:64px 1fr 90px;gap:10px;align-items:center}
+.track{height:10px;background:#1d2e41;border-radius:99px;overflow:hidden}.fill{height:100%;background:var(--green)}
+.summary{display:grid;gap:10px}.summary div{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:8px}
+.note{margin-top:16px;padding:12px 14px;border:1px dashed #35506d;border-radius:14px;color:#afc0d1;font-size:13px}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+@media(max-width:560px){.wrap{padding:14px}header{align-items:flex-start;flex-direction:column}.cards{grid-template-columns:1fr 1fr}.metric .num{font-size:25px}th:nth-child(4),td:nth-child(4){display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div><h1 id="title">Beslenme Takip Dashboard</h1><div class="muted">GitHub Pages • ChatGPT ile güncellenen günlük takip</div></div>
+ <div class="controls"><span class="small muted">Tarih</span><input id="date" type="date" value="2026-09-08"><button id="refresh">Yenile</button></div>
+</header>
+
+<section class="cards">
+ <div class="card metric"><div class="title">Kalori</div><div class="num" id="kcal">0 <span class="unit">kcal</span></div><div class="progress"><div class="bar" id="kcalBar"></div></div><div class="small muted" id="kcalGoal">Hedef tanımsız</div></div>
+ <div class="card metric"><div class="title">Protein</div><div class="num" id="protein">0 <span class="unit">g</span></div><div class="progress"><div class="bar" id="proteinBar"></div></div><div class="small muted" id="proteinGoal">Hedef tanımsız</div></div>
+ <div class="card metric"><div class="title">Karbonhidrat</div><div class="num" id="carbs">0 <span class="unit">g</span></div><div class="progress"><div class="bar" id="carbsBar"></div></div><div class="small muted" id="carbsGoal">Hedef tanımsız</div></div>
+ <div class="card metric"><div class="title">Yağ</div><div class="num" id="fat">0 <span class="unit">g</span></div><div class="progress"><div class="bar" id="fatBar"></div></div><div class="small muted" id="fatGoal">Hedef tanımsız</div></div>
+</section>
+
+<section class="grid2">
+ <div class="card">
+   <div class="section-head"><h2>Yediklerim</h2><span class="pill" id="count">0 kayıt</span></div>
+   <div style="overflow:auto"><table>
+    <thead><tr><th>Öğün</th><th>Besin</th><th>Miktar</th><th>Kalori</th><th>Protein</th></tr></thead>
+    <tbody id="rows"></tbody>
+   </table></div>
+ </div>
+ <div class="card">
+   <div class="section-head"><h2>Gün Özeti</h2></div>
+   <div class="summary" id="summary"></div>
+   <div class="note" id="updated">Veriler yükleniyor…</div>
+ </div>
+</section>
+
+<section class="card" style="margin-top:16px">
+ <div class="section-head"><h2>Son 7 Gün Kalori</h2><span class="small muted">Seçili tarihe göre</span></div>
+ <div class="week" id="week"></div>
+</section>
+</div>
+
+<script>
+let ENTRIES=[], CONFIG={goals:{}};
+const $=id=>document.getElementById(id);
+const fmt=n=>(Math.round((+n||0)*10)/10).toLocaleString('tr-TR');
+
+async function load(){
+ const stamp=Date.now();
+ const [e,c]=await Promise.all([
+   fetch(`data/entries.json?v=${stamp}`,{cache:'no-store'}).then(r=>r.json()),
+   fetch(`data/config.json?v=${stamp}`,{cache:'no-store'}).then(r=>r.json())
+ ]);
+ ENTRIES=e; CONFIG=c;
+ $('title').textContent=CONFIG.title||'Beslenme Takip Dashboard';
+ render();
+}
+function totals(date){
+ return ENTRIES.filter(x=>x.date===date).reduce((a,x)=>{
+  a.kcal+=+x.kcal||0;a.protein+=+x.protein||0;a.carbs+=+x.carbs||0;a.fat+=+x.fat||0;return a;
+ },{kcal:0,protein:0,carbs:0,fat:0});
+}
+function metric(key,val,unit,goal){
+ $(key).innerHTML=`${fmt(val)} <span class="unit">${unit}</span>`;
+ const pct=goal?Math.min(100,val/goal*100):0;
+ $(key+'Bar').style.width=pct+'%';
+ $(key+'Goal').textContent=goal?`${fmt(val)} / ${fmt(goal)} ${unit} • %${Math.round(val/goal*100)}`:'Hedef tanımsız';
+}
+function render(){
+ const date=$('date').value;
+ const day=ENTRIES.filter(x=>x.date===date);
+ const t=totals(date), g=CONFIG.goals||{};
+ metric('kcal',t.kcal,'kcal',+g.kcal||0);metric('protein',t.protein,'g',+g.protein||0);
+ metric('carbs',t.carbs,'g',+g.carbs||0);metric('fat',t.fat,'g',+g.fat||0);
+ $('count').textContent=`${day.length} kayıt`;
+ $('rows').innerHTML=day.length?day.map(x=>`<tr><td><span class="meal">${x.meal}</span></td><td>${x.food}</td><td>${x.amount}</td><td>${fmt(x.kcal)} kcal</td><td>${fmt(x.protein)} g</td></tr>`).join(''):`<tr><td colspan="5"><div class="empty">Bu tarihte kayıt yok.</div></td></tr>`;
+ $('summary').innerHTML=`<div><span>Toplam öğe</span><strong>${day.length}</strong></div><div><span>Kalori</span><strong>${fmt(t.kcal)} kcal</strong></div><div><span>Protein</span><strong>${fmt(t.protein)} g</strong></div><div><span>Karbonhidrat</span><strong>${fmt(t.carbs)} g</strong></div><div><span>Yağ</span><strong>${fmt(t.fat)} g</strong></div>`;
+ $('updated').textContent='Son veri güncellemesi: '+(CONFIG.lastUpdated||'bilinmiyor');
+ renderWeek(date);
+}
+function renderWeek(endDate){
+ const end=new Date(endDate+'T00:00:00'); const arr=[];
+ for(let i=6;i>=0;i--){const d=new Date(end);d.setDate(end.getDate()-i);const ds=d.toISOString().slice(0,10);arr.push({date:ds,kcal:totals(ds).kcal});}
+ const max=Math.max(1,...arr.map(x=>x.kcal));
+ $('week').innerHTML=arr.map(x=>`<div class="dayrow"><span class="small muted">${x.date.slice(8,10)}.${x.date.slice(5,7)}</span><div class="track"><div class="fill" style="width:${x.kcal/max*100}%"></div></div><strong style="text-align:right">${Math.round(x.kcal)} kcal</strong></div>`).join('');
+}
+$('date').addEventListener('change',render);
+$('refresh').addEventListener('click',load);
+load().catch(err=>{$('updated').textContent='Veri yüklenemedi: '+err.message});
+</script>
+</body>
+</html>
